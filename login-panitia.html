@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Panitia</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<section class="login">
+  <div class="container">
+    <h2>Login Panitia</h2>
+    <form id="formLoginPanitia">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Username" required>
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Password" required>
+      <button type="submit" class="btn-cta">Login</button>
+    </form>
+    <p id="msg"></p>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="js/supabase.js"></script>
+<script>
+const form = document.getElementById('formLoginPanitia');
+const msg = document.getElementById('msg');
+
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const username = document.getElementById('username').value;
+  const password = document.getElementById('password').value;
+
+  const { data, error } = await supabase
+    .from('panitia')
+    .select('*')
+    .eq('username', username)
+    .eq('password', password)
+    .single();
+
+  if(error || !data){
+    msg.textContent = 'Username/Password salah!';
+    msg.style.color = 'red';
+  } else {
+    msg.textContent = 'Login berhasil! Mengalihkan...';
+    msg.style.color = 'green';
+    localStorage.setItem('panitia', JSON.stringify(data));
+    window.location.href = 'dashboard-panitia.html';
+  }
+});
+</script>
+</body>
+</html>
