@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Panitia</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<section class="dashboard">
+  <div class="container">
+    <h2>Dashboard Panitia</h2>
+    <table border="1" width="100%" id="tabelSiswa">
+      <thead>
+        <tr>
+          <th>No Pendaftaran</th>
+          <th>Nama</th>
+          <th>Sekolah Asal</th>
+          <th>No Telp Siswa</th>
+          <th>No Telp Orang Tua</th>
+          <th>Status Approve</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="js/supabase.js"></script>
+<script>
+async function loadSiswa(){
+  const { data, error } = await supabase.from('siswa').select('*').order('tanggal_daftar', {ascending:false});
+  const tbody = document.querySelector('#tabelSiswa tbody');
+  tbody.innerHTML = '';
+  data.forEach(s => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${s.no_pendaftaran}</td>
+      <td>${s.nama}</td>
+      <td>${s.sekolah_asal}</td>
+      <td>${s.no_telp_siswa}</td>
+      <td>${s.no_telp_orangtua}</td>
+      <td>${s.status_approve ? '✅' : '❌'}</td>
+      <td><button onclick="approve('${s.no_pendaftaran}')">Approve</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function approve(no){
+  const { error } = await supabase.from('siswa').update({status_approve:true}).eq('no_pendaftaran', no);
+  if(!error) loadSiswa();
+}
+
+loadSiswa();
+</script>
+</body>
+</html>
