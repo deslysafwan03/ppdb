@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar PPDB SMK Bina Insani Pinang</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <div class="container header">
+    <div class="logo">SMK Bina Insani Pinang</div>
+    <nav>
+      <ul>
+        <li><a href="index.html">Beranda</a></li>
+        <li><a href="login-panitia.html">Login Panitia</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<section class="daftar">
+  <div class="container">
+    <h2>Form Pendaftaran</h2>
+    <form id="formDaftar">
+      <label>Nama Siswa</label>
+      <input type="text" id="nama" placeholder="Nama Lengkap" required>
+
+      <label>Sekolah Asal</label>
+      <input type="text" id="sekolah_asal" placeholder="Sekolah Asal" required>
+
+      <label>No Telpon Siswa</label>
+      <input type="text" id="no_telp_siswa" placeholder="08xxxxxxxxxx" required>
+
+      <label>No Telpon Orang Tua</label>
+      <input type="text" id="no_telp_orangtua" placeholder="08xxxxxxxxxx" required>
+
+      <button type="submit" class="btn-cta">Daftar Sekarang</button>
+    </form>
+    <p id="msg"></p>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+<script src="js/supabase.js"></script>
+<script>
+const form = document.getElementById('formDaftar');
+const msg = document.getElementById('msg');
+
+form.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+
+  // Generate nomor pendaftaran otomatis
+  let { data: last } = await supabase
+    .from('siswa')
+    .select('no_pendaftaran')
+    .order('tanggal_daftar', {ascending:false})
+    .limit(1);
+  let lastNo = last.length ? parseInt(last[0].no_pendaftaran.split('-')[1]) : 0;
+  let no_pendaftaran = `DOSMKBIP-${lastNo + 1}`;
+
+  const { error } = await supabase.from('siswa').insert([{
+    no_pendaftaran,
+    nama: document.getElementById('nama').value,
+    sekolah_asal: document.getElementById('sekolah_asal').value,
+    no_telp_siswa: document.getElementById('no_telp_siswa').value,
+    no_telp_orangtua: document.getElementById('no_telp_orangtua').value
+  }]);
+
+  if(error){
+    msg.textContent = 'Terjadi kesalahan: '+error.message;
+    msg.style.color = 'red';
+  } else {
+    msg.textContent = `Berhasil daftar! Nomor Pendaftaran Anda: ${no_pendaftaran}`;
+    msg.style.color = 'green';
+    form.reset();
+  }
+});
+</script>
+</body>
+</html>
