@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Siswa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family:Poppins; background:#0F3D2E; display:flex; justify-content:center; align-items:center; height:100vh;}
+    .card { background:white; padding:30px; border-radius:10px; width:300px;}
+    input { width:100%; padding:10px; margin:10px 0;}
+    button { width:100%; padding:10px; background:#C9A227; border:none;}
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <h3>Login Calon Siswa</h3>
+  <input type="text" id="no" placeholder="No Pendaftaran">
+  <input type="password" id="pass" placeholder="Password">
+  <button onclick="login()">Login</button>
+</div>
+
+<script>
+function login(){
+  fetch("https://script.google.com/macros/s/AKfycbz8AC6SzXkfCPRQnwj8AMEsRsxKJmssHBTLGYkdI6Ug4jcsYzr0hjPBt60Uju_FwyzHBQ/exec",{
+    method:"POST",
+    body:JSON.stringify({
+      action:"loginSiswa",
+      no_pendaftaran:document.getElementById("no").value,
+      password:document.getElementById("pass").value
+    })
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    if(data.status){
+      if(document.getElementById("pass").value === "smkbip2026"){
+        localStorage.setItem("no", document.getElementById("no").value);
+        window.location="ganti-password.html";
+      }else{
+        localStorage.setItem("no", document.getElementById("no").value);
+        window.location="form-data.html";
+      }
+    }else{
+      alert("Login gagal");
+    }
+  });
+}
+</script>
+
+</body>
+</html>

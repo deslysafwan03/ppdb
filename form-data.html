@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Lengkapi Data</title>
+</head>
+<body>
+<h3>Form Data Lengkap</h3>
+
+<input id="tempat" placeholder="Tempat Lahir">
+<input id="tanggal" type="date">
+<input id="nisn" placeholder="NISN">
+<input id="nik" placeholder="NIK">
+<input id="agama" placeholder="Agama">
+
+<button onclick="simpan()">Simpan Data</button>
+
+<script>
+function simpan(){
+  fetch("https://script.google.com/macros/s/AKfycbz8AC6SzXkfCPRQnwj8AMEsRsxKJmssHBTLGYkdI6Ug4jcsYzr0hjPBt60Uju_FwyzHBQ/exec",{
+    method:"POST",
+    body:JSON.stringify({
+      action:"updateDataLengkap",
+      no_pendaftaran:localStorage.getItem("no"),
+      tempat_lahir:document.getElementById("tempat").value,
+      tanggal_lahir:document.getElementById("tanggal").value,
+      nisn:document.getElementById("nisn").value,
+      nik:document.getElementById("nik").value,
+      agama:document.getElementById("agama").value
+    })
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    alert("Data berhasil disimpan");
+  });
+}
+</script>
+
+</body>
+</html>

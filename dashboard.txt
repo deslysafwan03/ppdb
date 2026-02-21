@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard PPDB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Poppins;}
+    .sidebar{width:200px; background:#0F3D2E; color:white; height:100vh; position:fixed;}
+    .sidebar a{display:block; padding:15px; color:white; text-decoration:none;}
+    .content{margin-left:210px; padding:20px;}
+    button{background:#C9A227; padding:10px; border:none;}
+  </style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h3 style="padding:15px;">PPDB</h3>
+  <a href="#">Input Siswa</a>
+  <a href="#">Approval</a>
+  <a href="#">Pembayaran</a>
+  <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<div class="content">
+  <h2>Dashboard Admin</h2>
+  <p>Selamat datang di sistem PPDB SMK Bina Insani</p>
+</div>
+
+<script>
+function logout(){
+  localStorage.clear();
+  window.location="login-admin.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Admin PPDB</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Poppins, sans-serif; background:#0F3D2E; display:flex; justify-content:center; align-items:center; height:100vh;}
+    .card { background:white; padding:30px; border-radius:10px; width:300px; }
+    input { width:100%; padding:10px; margin:10px 0; }
+    button { width:100%; padding:10px; background:#C9A227; border:none; cursor:pointer; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <h3>Login Admin / Panitia</h3>
+  <input type="text" id="username" placeholder="Username">
+  <input type="password" id="password" placeholder="Password">
+  <button onclick="login()">Login</button>
+</div>
+
+<script>
+function login(){
+  fetch("https://script.google.com/macros/s/AKfycbz8AC6SzXkfCPRQnwj8AMEsRsxKJmssHBTLGYkdI6Ug4jcsYzr0hjPBt60Uju_FwyzHBQ/exec",{
+    method:"POST",
+    body:JSON.stringify({
+      action:"loginAdmin",
+      username:document.getElementById("username").value,
+      password:document.getElementById("password").value
+    })
+  })
+  .then(res=>res.json())
+  .then(data=>{
+    if(data.status){
+      localStorage.setItem("user", data.role);
+      window.location="dashboard.html";
+    }else{
+      alert("Login gagal");
+    }
+  });
+}
+</script>
+</body>
+</html>
